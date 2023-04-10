@@ -5,11 +5,18 @@ import datetime
 
 
 HOME_URL = 'https://www.larepublica.co/'
-XPATH_LINK_TO_ARTICLE = '//h2/a/@href'
-XPATH_TITLE = '//h2/span/text()'
-XPATH_SUMMARY = '//div[@class="lead"]/p/text()'
-XPATH_BODY = '//div[@class="html-content"]/p[not(@class)]/text()'
+#XPATH_LINK_TO_ARTICLE = '//h2/a/@href'
+#XPATH_TITLE = '//h2/a/text()'
+#XPATH_SUMMARY = '//div/h2/span/text()'
+#XPATH_BODY = '//div/p[not(@class)]/text()'
 
+#url del articulo
+XPATH_LINK_TO_ARTICLE = '//h2/a/@href'
+
+#Extraer de cada articulo
+XPATH_TITTLE='//h2/span/text()'
+XPATH_SUMMARY='//*[@id="proportional-anchor-1"]/div/div/p/text()'
+XPATH_BODY='//div/div[4]/p/text()'
 
 def parse_notice(link, today):
     try:
@@ -19,7 +26,7 @@ def parse_notice(link, today):
             parsed = html.fromstring(notice)
 
             try:
-                title = parsed.xpath(XPATH_TITLE)[0]
+                title = parsed.xpath(XPATH_TITTLE)[0]
                 title = title.replace('\"', '')
                 summary = parsed.xpath(XPATH_SUMMARY)[0]
                 body = parsed.xpath(XPATH_BODY)
@@ -48,7 +55,7 @@ def parse_home():
             home = response.content.decode('utf-8')
             parsed = html.fromstring(home)
             links_to_notices = parsed.xpath(XPATH_LINK_TO_ARTICLE)
-            #print(links_to_notices)
+            print(links_to_notices)
             #print(len(links_to_notices))
             #return links_to_notices
             today = datetime.date.today().strftime('%d-%m-%Y')
